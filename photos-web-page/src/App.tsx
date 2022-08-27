@@ -1,20 +1,16 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Photos } from './photos/Photos';
+
 
 function App() {
+
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          hello world        </a>
-      </header>
+      <Photos></Photos>
     </div>
   );
 }
