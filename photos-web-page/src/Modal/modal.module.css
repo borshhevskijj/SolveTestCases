@@ -16,13 +16,13 @@
   opacity: 1;
   pointer-events: all;
 }
-.modalWindow {
+.modalContent {
   width: 600px;
   height: 450px;
   padding: 5px 15px;
   transform: scale(0.5);
   transition: 0.4s all;
 }
-.modalWindow.active {
+.modalContent.active {
   transform: scale(1);
 }

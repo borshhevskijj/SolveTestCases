@@ -19,8 +19,8 @@ export const Modal = ({ isActive, setIsActive, children }: IModalWindow) => {
   return (
     <>
 
-      <section key={uId} className={isActive ? cl.modalContainer + ' ' + cl.active : cl.modalContainer} onClick={() => setIsActive(false)}>
-        <div key={uId} onClick={(e) => e.stopPropagation} className={isActive ? cl.modalContent + ' ' + cl.active : cl.modalContent}>
+      <section key={uId} className={isActive ? cl.modalContainer + ' ' + cl.active : cl.modalContainer} onClick={(e) => setIsActive(false)}>
+        <div key={uId} onClick={(e) => e.stopPropagation()} className={isActive ? cl.modalContent + ' ' + cl.active : cl.modalContent}>
           {children}
         </div>
       </section>
