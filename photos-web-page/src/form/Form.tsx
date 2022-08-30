@@ -1,21 +1,24 @@
-import React, { useId, useState, useRef } from 'react'
+import React, { useState, useId } from 'react'
 import axios from 'axios'
 import cl from './form.module.css'
 import { Iphotos } from '../photos/Photos'
 
 interface Iprops {
     photo: Iphotos
+    setComments: any
+    comments: any
+    //  React.Dispatch<React.SetStateAction<({
+    //     id: number | string;
+    //     text: string;
+    //     date: Date;
+    // } | undefined)[] | undefined>>
 }
 
 
-export const Form = ({ photo }: Iprops) => {
+export const Form = ({ photo, setComments, comments }: Iprops) => {
     const [inputValue, setInputValue] = useState('')
     const [isValidForm, setIsValidForm] = useState(false)
-    let ref = useRef(null)
-
-
-    const uId = useId()
-
+    const uID = useId()
 
     const inputHandler = (e: any) => {
         setInputValue(e.target.value)
@@ -26,73 +29,37 @@ export const Form = ({ photo }: Iprops) => {
     }
 
     const comment = {
-        id: uId,
-        text: inputValue,
-        date: Date.now()
+        name: 'user',
+        comment: inputValue,
     }
 
-
-    // const element = document.querySelector('#commentForm');
     const url = `https://boiling-refuge-66454.herokuapp.com/images/${photo.id}/comments`
 
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault()
-    //     try {
-    //         const response = await axios.post(url, comment)
-    //         console.log(response.data);
-
-    //     } catch (error) {
-    //         alert(error)
-    //     }
-    // }
-
-    // const handleSubmit = (e: any) => {
-    //     e.preventDefault()
-    //     console.log(`${photo.id} - id`);
-
-    //     const xhr = new XMLHttpRequest()
-    //     xhr.open("POST", url)
-    //     xhr.send('qeqwr')
-    //     xhr.onload! = function () { alert(`${xhr.status} - status`) }
-    // }
-
-
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const headers = {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        try {
+            const response = await axios.post(url, comment, { headers })
+            const res = await JSON.parse(response.config.data)
 
-        fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: uId,
-                text: inputValue,
-                date: Date.now()
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-            .then(response => response.json())
-            .then(json => {
-                console.log('response: ' + JSON.stringify(json));
-            })
-
+            const copy = Object.assign([], comments);
+            copy.push({
+                id: uID,
+                text: res.comment,
+                data: Date.now()
+            });
+            setComments(copy)
+        } catch (error) {
+            alert(error)
+        }
     }
-
-
-
-
-
-
-
-
 
 
     return (
         <>
             <form
-                ref={ref}
-                id='commentForm'
-
                 onSubmit={(e) => {
                     handleSubmit(e)
                 }}
@@ -104,10 +71,7 @@ export const Form = ({ photo }: Iprops) => {
                     onChange={(e) => inputHandler(e)}
                     placeholder='комментировать...' />
 
-                <button
-                    onSubmit={(e: any) => handleSubmit(e)}
-                >
-                    отправить</button>
+                <button type='submit'> отправить</button>
             </form>
             {/* <div id='com' ref={ref}></div> */}
         </>

@@ -8,22 +8,19 @@ import { Form } from '../form/Form';
 export interface Iphotos {
   id: number
   url: string
-  comments?: [{
+  comments?: {
     id: number
     text: string
     date: Date
-  }]
+  }
 }
 
 export const Photos = () => {
   const [photos, setPhotos] = useState<Iphotos[] | undefined>()
   const [currentLargePhoto, setCurrentLargePhoto] = useState<Iphotos | undefined>()
-  const [comments, setComments] = useState<Iphotos['comments'] | undefined>()
+  const [comments, setComments] = useState<Iphotos['comments'][]>()
+  // const [comments, setComments] = useState<any>()
   const [isActive, setIsActive] = useState(false)
-  // const [isLoaded, setIsLoaded] = useState(false)
-  // console.log(currentLargePhoto?.comments);
-  // const comments = currentLargePhoto!.comments
-
 
   const getPhotos = async () => {
     const response = await axios.get('https://boiling-refuge-66454.herokuapp.com/images')
@@ -44,13 +41,12 @@ export const Photos = () => {
 
 
   const openModal = async (e: any, id: number) => {
-
     try {
       const largePhoto = await axios.get(`https://boiling-refuge-66454.herokuapp.com/images/${id}`)
       // .then((res: any) => {
       // res.data
       setCurrentLargePhoto(largePhoto.data)
-
+      setComments(largePhoto.data?.comments)
       setIsActive(true)
       // })
       // console.log(largePhoto.data);
@@ -60,6 +56,16 @@ export const Photos = () => {
       alert(`ошибка - ${error}`)
     }
   }
+  const obj = {
+    id: 152,
+    text: 'string',
+    date: 1243242352
+  }
+  // console.log(currentLargePhoto?.comments);
+  // setComments(comments.push(obj))
+  console.log(comments);
+
+
 
   return (
     <section className={cl.photoContainer}>
@@ -79,7 +85,7 @@ export const Photos = () => {
             {
 
 
-              currentLargePhoto?.comments!.map(comment => {
+              comments!.map((comment: any) => {
                 // console.log(currentLargePhoto?.id, 'qwe');
                 return (
                   <>
@@ -88,7 +94,13 @@ export const Photos = () => {
                 )
               })
             }
-            <Form photo={currentLargePhoto!} />
+
+
+
+            <Form photo={currentLargePhoto!} setComments={setComments} comments={comments} />
+
+
+
           </>
         }
         />
