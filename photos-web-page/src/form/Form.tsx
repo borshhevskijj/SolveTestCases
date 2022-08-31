@@ -28,21 +28,22 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
         setIsValidForm(true)
     }
 
-    const comment = {
-        name: 'user',
-        comment: inputValue,
-    }
 
     const url = `https://boiling-refuge-66454.herokuapp.com/images/${photo.id}/comments`
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        const comment = {
+            name: 'user',
+            comment: inputValue,
+        }
         const headers = {
             "Content-type": "application/json; charset=UTF-8"
         }
         try {
             const response = await axios.post(url, comment, { headers })
-            const res = await JSON.parse(response.config.data)
+            const res = JSON.parse(response.config.data)
 
             const copy = Object.assign([], comments);
             copy.push({
@@ -51,6 +52,8 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
                 data: Date.now()
             });
             setComments(copy)
+
+
         } catch (error) {
             alert(error)
         }
@@ -60,18 +63,27 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
     return (
         <>
             <form
+                className={cl.commentForm}
                 onSubmit={(e) => {
                     handleSubmit(e)
                 }}
             >
+                {/* <div className={cl.inputAndSubmitBtnContainer}> */}
                 <input
                     onSubmit={(e) => e.preventDefault()}
-                    type="text"
-                    value={inputValue}
                     onChange={(e) => inputHandler(e)}
+                    value={inputValue}
+                    className={cl.formInput}
+                    type="text"
+                    // name='formInput'
                     placeholder='комментировать...' />
+                <button
+                    type='submit'
+                    className={cl.submitBtn}
+                >отправить</button>
+                {/* </div> */}
 
-                <button type='submit'> отправить</button>
+                {/* <label className='formLabel' htmlFor="formInput">комментировать...</label> */}
             </form>
             {/* <div id='com' ref={ref}></div> */}
         </>

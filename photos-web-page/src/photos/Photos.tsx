@@ -5,6 +5,9 @@ import { Loader } from './../Loader';
 import cl from './photos.module.css'
 import { Form } from '../form/Form';
 
+import { Comments } from '../comments/Comments';
+
+
 export interface Iphotos {
   id: number
   url: string
@@ -24,7 +27,6 @@ export const Photos = () => {
 
   const getPhotos = async () => {
     const response = await axios.get('https://boiling-refuge-66454.herokuapp.com/images')
-    // .then(res => res.data)
     setPhotos(response.data)
   }
 
@@ -38,75 +40,37 @@ export const Photos = () => {
 
   }, [])
 
-
-
-  const openModal = async (e: any, id: number) => {
+  const openModal = async (e: React.MouseEvent<HTMLElement>, id: number) => {
     try {
       const largePhoto = await axios.get(`https://boiling-refuge-66454.herokuapp.com/images/${id}`)
-      // .then((res: any) => {
-      // res.data
       setCurrentLargePhoto(largePhoto.data)
       setComments(largePhoto.data?.comments)
       setIsActive(true)
-      // })
-      // console.log(largePhoto.data);
-
     }
     catch (error) {
       alert(`ошибка - ${error}`)
     }
   }
-  const obj = {
-    id: 152,
-    text: 'string',
-    date: 1243242352
-  }
-  // console.log(currentLargePhoto?.comments);
-  // setComments(comments.push(obj))
-  console.log(comments);
-
-
 
   return (
     <section className={cl.photoContainer}>
       {
         photos
           ? photos.map((photo: Iphotos) =>
-            <img src={photo.url} key={photo.id} onClick={(e: any) => openModal(e, photo.id)} alt="" />)
+            <img src={photo.url} key={photo.id} onClick={(e) => openModal(e, photo.id)} alt="" />)
           : <Loader />
       }
 
       {isActive &&
         <Modal isActive={isActive} setIsActive={setIsActive} children={
           <>
-
-            {/* {console.log(currentLargePhoto, 'qwerqw')} */}
-            <img key={currentLargePhoto?.id} src={currentLargePhoto?.url} alt="" />
-            {
-
-
-              comments!.map((comment: any) => {
-                // console.log(currentLargePhoto?.id, 'qwe');
-                return (
-                  <>
-                    <div key={comment.id}>{comment.text}</div>
-                  </>
-                )
-              })
-            }
-
-
-
+            <img style={{ borderRadius: '5px' }} key={currentLargePhoto?.id} src={currentLargePhoto?.url} alt="" />
+            <Comments comments={comments!} />
             <Form photo={currentLargePhoto!} setComments={setComments} comments={comments} />
-
-
-
           </>
         }
         />
       }
-
-
     </section>
   )
 }

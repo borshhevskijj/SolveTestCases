@@ -1,5 +1,5 @@
 Задание:
-​
+​https://github.com/avito-tech/safedeal-frontend-trainee
 
 Необходимо сверстать адаптивную страницу со списком фотографий.​
 
