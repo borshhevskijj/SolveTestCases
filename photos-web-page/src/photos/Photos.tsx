@@ -22,7 +22,6 @@ export const Photos = () => {
   const [photos, setPhotos] = useState<Iphotos[] | undefined>()
   const [currentLargePhoto, setCurrentLargePhoto] = useState<Iphotos | undefined>()
   const [comments, setComments] = useState<Iphotos['comments'][]>()
-  // const [comments, setComments] = useState<any>()
   const [isActive, setIsActive] = useState(false)
 
   const getPhotos = async () => {
@@ -46,11 +45,13 @@ export const Photos = () => {
       setCurrentLargePhoto(largePhoto.data)
       setComments(largePhoto.data?.comments)
       setIsActive(true)
+
     }
     catch (error) {
       alert(`ошибка - ${error}`)
     }
   }
+  // console.log(comments, 'comm');
 
   return (
     <section className={cl.photoContainer}>

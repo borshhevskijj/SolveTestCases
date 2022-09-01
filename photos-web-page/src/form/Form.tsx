@@ -1,24 +1,26 @@
-import React, { useState, useId } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import cl from './form.module.css'
 import { Iphotos } from '../photos/Photos'
 
 interface Iprops {
     photo: Iphotos
+    // setComments: (comment: string) => void;
     setComments: any
     comments: any
-    //  React.Dispatch<React.SetStateAction<({
-    //     id: number | string;
-    //     text: string;
-    //     date: Date;
-    // } | undefined)[] | undefined>>
 }
 
+
+const commentID = (arr: Array<Iprops['comments']>) => {
+    if (arr.length) {
+        return arr.at(-1).id
+    }
+    return 1
+}
 
 export const Form = ({ photo, setComments, comments }: Iprops) => {
     const [inputValue, setInputValue] = useState('')
     const [isValidForm, setIsValidForm] = useState(false)
-    const uID = useId()
 
     const inputHandler = (e: any) => {
         setInputValue(e.target.value)
@@ -31,34 +33,40 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
 
     const url = `https://boiling-refuge-66454.herokuapp.com/images/${photo.id}/comments`
 
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
+
+
+
         const comment = {
-            name: 'user',
+            name: 'userName',
             comment: inputValue,
         }
         const headers = {
             "Content-type": "application/json; charset=UTF-8"
         }
         try {
+
             const response = await axios.post(url, comment, { headers })
             const res = JSON.parse(response.config.data)
 
+
             const copy = Object.assign([], comments);
             copy.push({
-                id: uID,
+                id: commentID(comments),
                 text: res.comment,
                 data: Date.now()
             });
             setComments(copy)
-
-
+            setInputValue('')
         } catch (error) {
             alert(error)
         }
     }
 
+    console.log(comments[0].id, 'idd');
 
     return (
         <>
@@ -68,24 +76,18 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
                     handleSubmit(e)
                 }}
             >
-                {/* <div className={cl.inputAndSubmitBtnContainer}> */}
                 <input
                     onSubmit={(e) => e.preventDefault()}
                     onChange={(e) => inputHandler(e)}
                     value={inputValue}
                     className={cl.formInput}
                     type="text"
-                    // name='formInput'
                     placeholder='комментировать...' />
                 <button
                     type='submit'
                     className={cl.submitBtn}
                 >отправить</button>
-                {/* </div> */}
-
-                {/* <label className='formLabel' htmlFor="formInput">комментировать...</label> */}
             </form>
-            {/* <div id='com' ref={ref}></div> */}
         </>
 
     )
