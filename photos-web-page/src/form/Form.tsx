@@ -5,59 +5,46 @@ import { Iphotos } from '../photos/Photos'
 
 interface Iprops {
     photo: Iphotos
-    // setComments: (comment: string) => void;
     setComments: any
     comments: any
 }
 
 
-const commentID = (arr: Array<Iprops['comments']>) => {
-    if (arr.length) {
-        return arr.at(-1).id
-    }
-    return 1
-}
+const uid = () => Date.now().toString(36) + Math.random().toString(36).substring(0);
+
 
 export const Form = ({ photo, setComments, comments }: Iprops) => {
     const [inputValue, setInputValue] = useState('')
-    const [isValidForm, setIsValidForm] = useState(false)
 
-    const inputHandler = (e: any) => {
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value)
-        if (e.target.value <= 0) {
-            setIsValidForm(false)
-        }
-        setIsValidForm(true)
     }
 
 
+
+
+
     const url = `https://boiling-refuge-66454.herokuapp.com/images/${photo.id}/comments`
+    const comment = {
+        name: 'userName',
+        comment: inputValue,
+    }
+    const headers = {
+        "Content-type": "application/json; charset=UTF-8"
+    }
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
-
-
-
-        const comment = {
-            name: 'userName',
-            comment: inputValue,
-        }
-        const headers = {
-            "Content-type": "application/json; charset=UTF-8"
-        }
         try {
-
             const response = await axios.post(url, comment, { headers })
             const res = JSON.parse(response.config.data)
 
-
-            const copy = Object.assign([], comments);
+            const copy: Iphotos['comments'][] = Object.assign([], comments);
             copy.push({
-                id: commentID(comments),
+                id: uid(),
                 text: res.comment,
-                data: Date.now()
+                date: Date.now()
             });
             setComments(copy)
             setInputValue('')
@@ -66,7 +53,6 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
         }
     }
 
-    console.log(comments[0].id, 'idd');
 
     return (
         <>
@@ -77,6 +63,7 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
                 }}
             >
                 <input
+                    required
                     onSubmit={(e) => e.preventDefault()}
                     onChange={(e) => inputHandler(e)}
                     value={inputValue}

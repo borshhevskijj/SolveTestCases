@@ -12,9 +12,9 @@ export interface Iphotos {
   id: number
   url: string
   comments?: {
-    id: number
+    id: number | string
     text: string
-    date: Date
+    date: number
   }
 }
 
@@ -51,7 +51,6 @@ export const Photos = () => {
       alert(`ошибка - ${error}`)
     }
   }
-  // console.log(comments, 'comm');
 
   return (
     <section className={cl.photoContainer}>

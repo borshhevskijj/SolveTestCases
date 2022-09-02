@@ -13,7 +13,6 @@ export const Comments = ({ comments }: Iprops) => {
         <section className={cl.commentsArea}>
             {comments!.length
                 ? comments!.map((comment: Iphotos['comments']) => {
-                    console.log(comment!.id, 'idd');
                     return (
                         <div className={cl.comment} key={comment!.id}>{comment!.text}</div>
                     )

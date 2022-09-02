@@ -9,7 +9,6 @@
   height: 100%;
   width: 20%;
   border: 0;
-  /* border-top-right-radius: 5px; */
   border-bottom-right-radius: 5px;
 }
 .formInput {
@@ -17,19 +16,10 @@
   width: 80%;
   height: 100%;
   border: 0;
-  /* border-top-left-radius: 5px; */
   border-bottom-left-radius: 5px;
   outline: none;
 }
-.formInput :active {
-  border: 0;
-}
-
 .commentForm {
-  /* background-color: red; */
   height: 30px;
   width: 100%;
 }
-/* .inputAndSubmitBtnContainer{
-
-} */
