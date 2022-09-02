@@ -9,7 +9,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div style={{ padding: '5% 10%', backgroundColor: '#f7f7f7', minHeight: '100vh' }} className="App">
       <Photos />
     </div>
   );

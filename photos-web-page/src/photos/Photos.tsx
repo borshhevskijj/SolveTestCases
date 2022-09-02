@@ -39,25 +39,39 @@ export const Photos = () => {
 
   }, [])
 
+  useEffect(() => {
+    if (isActive) {
+      document.body.style.overflow = 'hidden'
+    }
+    if (!isActive) {
+      document.body.style.overflow = 'scroll'
+    }
+  }, [isActive])
+
+
   const openModal = async (e: React.MouseEvent<HTMLElement>, id: number) => {
     try {
       const largePhoto = await axios.get(`https://boiling-refuge-66454.herokuapp.com/images/${id}`)
       setCurrentLargePhoto(largePhoto.data)
       setComments(largePhoto.data?.comments)
       setIsActive(true)
-
     }
     catch (error) {
       alert(`ошибка - ${error}`)
     }
   }
 
+
+
   return (
     <section className={cl.photoContainer}>
       {
         photos
           ? photos.map((photo: Iphotos) =>
-            <img src={photo.url} key={photo.id} onClick={(e) => openModal(e, photo.id)} alt="" />)
+            <div key={photo.id} className={cl.photo}>
+              <img src={photo.url} onClick={(e) => openModal(e, photo.id)} alt="" />
+            </div>
+          )
           : <Loader />
       }
 

@@ -1,20 +1,28 @@
-/* .comment {
-  background-color: antiquewhite;
-  padding: 15px 0 15px 10px;
-  border-bottom: 1px solid #00000039;
+/* .photoContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 20px;
 }
-.commentsArea {
-  background-color: antiquewhite;
+.photo {
+  max-width: 300px;
+} */
 
+.photoContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 30px;
+  /* place-items: center; */
+}
+
+.photoContainer .photo {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  /* place-items: center; */
+}
+
+.photoContainer .photo img {
   width: 100%;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  height: 100%;
+  object-fit: cover;
 }
-.commentsArea :first-child {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-} */
-
-/* .container {
-  max-height: 150px;
-} */

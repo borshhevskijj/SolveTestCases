@@ -8,8 +8,6 @@ interface IModalWindow {
   children: JSX.Element | JSX.Element[]
 }
 
-
-
 export const Modal = ({ isActive, setIsActive, children }: IModalWindow) => {
   return (
     <>
