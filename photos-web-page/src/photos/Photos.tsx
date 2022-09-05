@@ -4,9 +4,7 @@ import { Modal } from '../Modal/Modal';
 import { Loader } from './../Loader';
 import cl from './photos.module.css'
 import { Form } from '../form/Form';
-
 import { Comments } from '../comments/Comments';
-
 
 export interface Iphotos {
   id: number
@@ -17,6 +15,8 @@ export interface Iphotos {
     date: number
   }
 }
+export const urlPhotos = 'https://boiling-refuge-66454.herokuapp.com/images'
+
 
 export const Photos = () => {
   const [photos, setPhotos] = useState<Iphotos[] | undefined>()
@@ -25,7 +25,7 @@ export const Photos = () => {
   const [isActive, setIsActive] = useState(false)
 
   const getPhotos = async () => {
-    const response = await axios.get('https://boiling-refuge-66454.herokuapp.com/images')
+    const response = await axios.get(urlPhotos)
     setPhotos(response.data)
   }
 
@@ -39,7 +39,7 @@ export const Photos = () => {
 
   }, [])
 
-  useEffect(() => {
+  useEffect(() => { // I couldn't install it via css :)
     if (isActive) {
       document.body.style.overflow = 'hidden'
     }
@@ -51,7 +51,7 @@ export const Photos = () => {
 
   const openModal = async (e: React.MouseEvent<HTMLElement>, id: number) => {
     try {
-      const largePhoto = await axios.get(`https://boiling-refuge-66454.herokuapp.com/images/${id}`)
+      const largePhoto = await axios.get(`${urlPhotos}/${id}`)
       setCurrentLargePhoto(largePhoto.data)
       setComments(largePhoto.data?.comments)
       setIsActive(true)
@@ -72,8 +72,8 @@ export const Photos = () => {
               <img src={photo.url} onClick={(e) => openModal(e, photo.id)} alt="" />
             </div>
           )
-          : <Loader />
-      }
+          : <Loader
+          />}
 
       {isActive &&
         <Modal isActive={isActive} setIsActive={setIsActive} children={

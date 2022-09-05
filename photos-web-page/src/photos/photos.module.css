@@ -11,14 +11,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 30px;
-  /* place-items: center; */
 }
 
 .photoContainer .photo {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  /* place-items: center; */
 }
 
 .photoContainer .photo img {

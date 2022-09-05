@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import cl from './form.module.css'
 import { Iphotos } from '../photos/Photos'
+import { urlPhotos } from './../photos/Photos'
+
 
 interface Iprops {
     photo: Iphotos
@@ -9,8 +11,11 @@ interface Iprops {
     comments: any
 }
 
-
 const uid = () => Date.now().toString(36) + Math.random().toString(36).substring(0);
+const getCommentsUrl = (urlPhotos: string, id: string | number) => `${urlPhotos}/${id}/comments`
+const headers = {
+    "Content-type": "application/json; charset=UTF-8"
+}
 
 
 export const Form = ({ photo, setComments, comments }: Iprops) => {
@@ -20,24 +25,16 @@ export const Form = ({ photo, setComments, comments }: Iprops) => {
         setInputValue(e.target.value)
     }
 
-
-
-
-
-    const url = `https://boiling-refuge-66454.herokuapp.com/images/${photo.id}/comments`
     const comment = {
         name: 'userName',
         comment: inputValue,
-    }
-    const headers = {
-        "Content-type": "application/json; charset=UTF-8"
     }
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            const response = await axios.post(url, comment, { headers })
+            const response = await axios.post(getCommentsUrl(urlPhotos, photo.id), comment, { headers })
             const res = JSON.parse(response.config.data)
 
             const copy: Iphotos['comments'][] = Object.assign([], comments);
